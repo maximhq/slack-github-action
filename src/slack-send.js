@@ -79,10 +79,11 @@ module.exports = async function slackSend(core) {
           if (updateTs) {
             // update message
             webResponse = await web.chat.update(
-              { updateTs, channel: channelId.trim(), text: message, ...(payload || {}) }
+              { ts: updateTs, channel: channelId.trim(), text: message, ...(payload || {}) },
             );
-          } if (threadTs) {
+          } else if (threadTs) {
             // send reply to the thread
+            console.log('Sending as reply to', threadTs);
             webResponse = await web.chat.postMessage(
               { thread_ts: threadTs, channel: channelId.trim(), text: message, ...(payload || {}) },
             );
